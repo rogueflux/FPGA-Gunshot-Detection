@@ -1,1 +1,2 @@
 # Gunshot-Detection-using-FPGA
+This project implements a real-time gunshot detection system on an FPGA platform. It captures acoustic signals through a microphone, processes them using digital signal processing techniques (FFT, filtering, thresholding), and identifies potential gunshots based on characteristic audio signatures. The system is designed for low-latency response and can be integrated into smart surveillance or defense systems.
