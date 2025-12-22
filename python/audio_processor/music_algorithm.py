@@ -450,4 +450,112 @@ class MUSICAlgorithm:
         # Default to 1 source if no clear drop
         return 1
     
-   
+    def _compute_peak_confidence(self, spectrum, peak_idx):
+        """
+        Compute confidence based on peak sharpness.
+        
+        Parameters:
+        -----------
+        spectrum : numpy array
+            MUSIC spectrum
+        peak_idx : int
+            Index of peak
+            
+        Returns:
+        --------
+        confidence : float
+            Confidence value (0-1)
+        """
+        peak_value = spectrum[peak_idx]
+        mean_value = np.mean(spectrum)
+        std_value = np.std(spectrum)
+        
+        if std_value == 0:
+            return 0.0
+            
+        # Normalized peak height
+        normalized_peak = (peak_value - mean_value) / std_value
+        
+        # Convert to confidence (sigmoid)
+        confidence = 1.0 / (1.0 + np.exp(-0.5 * normalized_peak))
+        
+        return min(max(confidence, 0.0), 1.0)
+    
+    def _compute_full_spectrum(self, audio_signals, search_range, grid_resolution):
+        """Compute full MUSIC spectrum over search grid."""
+        x_range = np.arange(search_range[0], search_range[1] + grid_resolution, grid_resolution)
+        y_range = np.arange(search_range[0], search_range[1] + grid_resolution, grid_resolution)
+        z_range = np.array([0])
+        
+        grid_points = []
+        for x in x_range:
+            for y in y_range:
+                for z in z_range:
+                    grid_points.append([x, y, z])
+                    
+        grid_points = np.array(grid_points)
+        
+        spectrum = self.compute_music_spectrum(audio_signals, grid_points)
+        
+        return spectrum, grid_points
+    
+    def _remove_peak_region(self, spectrum, grid_points, peak_position, removal_radius):
+        """
+        Remove region around peak to find next source.
+        
+        Parameters:
+        -----------
+        spectrum : numpy array
+            Current spectrum
+        grid_points : numpy array
+            Grid points
+        peak_position : numpy array
+            Position of peak to remove
+        removal_radius : float
+            Radius to remove around peak
+            
+        Returns:
+        --------
+        new_spectrum : numpy array
+            Spectrum with peak region removed
+        """
+        new_spectrum = spectrum.copy()
+        
+        # Find points within removal radius
+        distances = np.linalg.norm(grid_points - peak_position, axis=1)
+        mask = distances < removal_radius
+        
+        # Set spectrum values in this region to minimum
+        new_spectrum[mask] = np.min(spectrum)
+        
+        return new_spectrum
+
+
+# Helper functions for microphone array configurations
+def create_linear_array(num_mics=6, spacing=0.1, center=(0, 0, 0)):
+    """Create linear microphone array."""
+    positions = []
+    for i in range(num_mics):
+        x = center[0] + (i - (num_mics-1)/2) * spacing
+        positions.append([x, center[1], center[2]])
+    return np.array(positions)
+
+def create_circular_array(num_mics=6, radius=0.1, center=(0, 0, 0)):
+    """Create circular microphone array."""
+    positions = []
+    for i in range(num_mics):
+        angle = 2 * np.pi * i / num_mics
+        x = center[0] + radius * np.cos(angle)
+        y = center[1] + radius * np.sin(angle)
+        positions.append([x, y, center[2]])
+    return np.array(positions)
+
+def create_rectangular_array(rows=2, cols=3, spacing=0.1, center=(0, 0, 0)):
+    """Create rectangular microphone array."""
+    positions = []
+    for i in range(rows):
+        for j in range(cols):
+            x = center[0] + (j - (cols-1)/2) * spacing
+            y = center[1] + (i - (rows-1)/2) * spacing
+            positions.append([x, y, center[2]])
+    return np.array(positions)
