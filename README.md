@@ -256,13 +256,9 @@ Proprietary - Contact authors for licensing information.
 
 ## Contact
 
-**Research Team**  
-Email: research@example.com  
-Website: https://example.com/research
+**My Contact**  
+Email: priyanshu.sil.201529@gmail.com  
 
-**Technical Support**  
-Email: support@example.com  
-Issue Tracker: GitHub Issues
 
 ## Acknowledgments
 
