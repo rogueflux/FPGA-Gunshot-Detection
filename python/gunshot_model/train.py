@@ -240,4 +240,145 @@ class ModelTrainer:
         }, filepath)
         print(f"Model saved to {filepath}")
         
-    def load_model
+    def load_model(self, filepath):
+        """Load model state."""
+        if os.path.exists(filepath):
+            checkpoint = torch.load(filepath, map_location=self.device)
+            self.model.load_state_dict(checkpoint['model_state_dict'])
+            
+            if 'optimizer_state_dict' in checkpoint:
+                self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+                
+            if 'config' in checkpoint:
+                self.config = checkpoint['config']
+                
+            if 'history' in checkpoint:
+                self.history = checkpoint['history']
+                
+            print(f"Model loaded from {filepath}")
+        else:
+            print(f"Model file not found: {filepath}")
+            
+    def _check_early_stopping(self):
+        """Check for early stopping conditions."""
+        if len(self.history['val_loss']) < 10:
+            return False
+            
+        # Check if validation loss hasn't improved for 10 epochs
+        recent_losses = self.history['val_loss'][-10:]
+        if min(recent_losses) > np.min(self.history['val_loss'][:-10]):
+            return True
+            
+        return False
+    
+    def _generate_classification_report(self, targets, predictions, dataset_name):
+        """Generate and print classification report."""
+        from sklearn.metrics import classification_report, confusion_matrix
+        
+        print(f"\n{classification_report(targets, predictions, target_names=['Non-Gunshot', 'Gunshot'])}")
+        
+        # Plot confusion matrix
+        cm = confusion_matrix(targets, predictions)
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                   xticklabels=['Non-Gunshot', 'Gunshot'],
+                   yticklabels=['Non-Gunshot', 'Gunshot'])
+        plt.title(f'Confusion Matrix - {dataset_name}')
+        plt.ylabel('True Label')
+        plt.xlabel('Predicted Label')
+        
+        cm_path = os.path.join(self.output_dir, f'confusion_matrix_{dataset_name.lower()}.png')
+        plt.savefig(cm_path, dpi=150, bbox_inches='tight')
+        plt.close()
+        
+    def _save_training_history(self):
+        """Save training history to file."""
+        history_df = pd.DataFrame(self.history)
+        history_path = os.path.join(self.output_dir, 'training_history.csv')
+        history_df.to_csv(history_path, index=False)
+        
+        # Save config
+        config_path = os.path.join(self.output_dir, 'training_config.json')
+        with open(config_path, 'w') as f:
+            json.dump(self.config, f, indent=2)
+            
+    def _plot_training_curves(self):
+        """Plot training curves."""
+        fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+        
+        # Loss plot
+        axes[0].plot(self.history['train_loss'], label='Train Loss')
+        axes[0].plot(self.history['val_loss'], label='Val Loss')
+        axes[0].set_xlabel('Epoch')
+        axes[0].set_ylabel('Loss')
+        axes[0].set_title('Training and Validation Loss')
+        axes[0].legend()
+        axes[0].grid(True)
+        
+        # Accuracy plot
+        axes[1].plot(self.history['train_acc'], label='Train Acc')
+        axes[1].plot(self.history['val_acc'], label='Val Acc')
+        axes[1].set_xlabel('Epoch')
+        axes[1].set_ylabel('Accuracy (%)')
+        axes[1].set_title('Training and Validation Accuracy')
+        axes[1].legend()
+        axes[1].grid(True)
+        
+        plt.tight_layout()
+        
+        curves_path = os.path.join(self.output_dir, 'training_curves.png')
+        plt.savefig(curves_path, dpi=150, bbox_inches='tight')
+        plt.close()
+
+
+def main():
+    """Main training function."""
+    # Configuration
+    config = {
+        # Model parameters
+        'num_classes': 2,
+        'input_channels': 1,
+        'dropout_rate': 0.3,
+        
+        # Training parameters
+        'batch_size': 32,
+        'epochs': 50,
+        'learning_rate': 1e-3,
+        'weight_decay': 1e-4,
+        
+        # Data parameters
+        'data_dir': 'data/audio_samples',
+        'train_ratio': 0.7,
+        'val_ratio': 0.15,
+        'test_ratio': 0.15,
+        
+        # Class weights (handle imbalance)
+        'class_weights': [1.0, 2.0],  # Gunshot class gets more weight
+        
+        # Output
+        'output_dir': f'training_output_{datetime.now().strftime("%Y%m%d_%H%M%S")}',
+        'device': 'cuda' if torch.cuda.is_available() else 'cpu'
+    }
+    
+    # Create data loaders
+    train_loader, val_loader, test_loader = get_data_loaders(
+        data_dir=config['data_dir'],
+        batch_size=config['batch_size'],
+        train_ratio=config['train_ratio'],
+        val_ratio=config['val_ratio'],
+        test_ratio=config['test_ratio']
+    )
+    
+    # Create and run trainer
+    trainer = ModelTrainer(config)
+    history = trainer.train(train_loader, val_loader, test_loader)
+    
+    # Save final model
+    final_model_path = os.path.join(trainer.output_dir, 'final_model.pth')
+    trainer.save_model(final_model_path)
+    
+    print(f"\nTraining completed. Results saved to {trainer.output_dir}")
+
+
+if __name__ == "__main__":
+    main()
