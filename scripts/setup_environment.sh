@@ -537,4 +537,156 @@ EOF
 .PHONY: help setup test build program clean
 
 help:
-	@echo
+	@echo "Available targets:"
+	@echo "  setup     - Setup development environment"
+	@echo "  test      - Run all tests"
+	@echo "  build     - Build complete system"
+	@echo "  program   - Program FPGA"
+	@echo "  clean     - Clean build artifacts"
+	@echo "  docs      - Generate documentation"
+
+setup:
+	./scripts/setup_environment.sh
+
+test:
+	./scripts/test_system.py --skip-hardware
+
+test-hardware:
+	./scripts/test_system.py
+
+build:
+	./scripts/complete_build.sh
+
+program:
+	./scripts/program_fpga.sh
+
+clean:
+	rm -rf output/*
+	rm -rf logs/*
+	find . -name "__pycache__" -type d -exec rm -rf {} +
+	find . -name "*.pyc" -delete
+
+docs:
+	cd docs && make html
+
+train:
+	cd python/gunshot_model && python train.py
+
+simulate:
+	cd vitis_hls && vitis_hls -f hls_script.tcl -tclargs simulation
+
+lint:
+	flake8 python/
+	black --check python/
+
+format:
+	black python/
+EOF
+    fi
+    
+    echo -e "${GREEN}  Development tools configured!${NC}"
+}
+
+# Run validation tests
+run_validation_tests() {
+    echo -e "${YELLOW}[9/10] Running validation tests...${NC}"
+    
+    # Activate virtual environment for tests
+    source "$VENV_DIR/bin/activate"
+    
+    # Simple Python test
+    echo "  Testing Python environment..."
+    python3 -c "
+import sys
+print(f'Python {sys.version}')
+import torch
+print(f'PyTorch {torch.__version__}')
+import numpy as np
+print(f'NumPy {np.__version__}')
+print('All imports successful!')
+"
+    
+    # Test serial port
+    echo "  Testing serial port access..."
+    python3 -c "
+import serial.tools.list_ports
+ports = list(serial.tools.list_ports.comports())
+if ports:
+    for port in ports:
+        print(f'Found: {port.device} - {port.description}')
+else:
+    print('No serial ports found (this is OK if no devices connected)')
+"
+    
+    echo -e "${GREEN}  Validation tests passed!${NC}"
+}
+
+# Print setup completion
+print_completion() {
+    echo -e "${YELLOW}[10/10] Setup complete!${NC}"
+    
+    echo -e "${GREEN}"
+    echo "╔══════════════════════════════════════════════════════════╗"
+    echo "║               SETUP COMPLETE!                           ║"
+    echo "╠══════════════════════════════════════════════════════════╣"
+    echo "║                                                          ║"
+    echo "║  Your environment is ready for gunshot detection        ║"
+    echo "║  development and deployment.                            ║"
+    echo "║                                                          ║"
+    echo "║  Next steps:                                            ║"
+    echo "║                                                          ║"
+    echo "║  1. Activate virtual environment:                       ║"
+    echo "║     source venv/bin/activate                            ║"
+    echo "║                                                          ║"
+    echo "║  2. Explore notebooks:                                  ║"
+    echo "║     jupyter notebook notebooks/                         ║"
+    echo "║                                                          ║"
+    echo "║  3. Run tests:                                          ║"
+    echo "║     ./scripts/test_system.py                            ║"
+    echo "║                                                          ║"
+    echo "║  4. Build complete system:                              ║"
+    echo "║     ./scripts/complete_build.sh                         ║"
+    echo "║                                                          ║"
+    echo "║  5. Program FPGA:                                       ║"
+    echo "║     ./scripts/program_fpga.sh                           ║"
+    echo "║                                                          ║"
+    echo "║  Or use the Makefile:                                   ║"
+    echo "║     make test        # Run tests                        ║"
+    echo "║     make build       # Build system                     ║"
+    echo "║     make program     # Program FPGA                     ║"
+    echo "║                                                          ║"
+    echo "║  Documentation:                                         ║"
+    echo "║     • Check docs/ directory                            ║"
+    echo "║     • Review notebooks for examples                    ║"
+    echo "║                                                          ║"
+    echo "║  Need help? Check the setup log:                       ║"
+    echo "║     $LOG_FILE                                          ║"
+    echo "║                                                          ║"
+    echo "╚══════════════════════════════════════════════════════════╝"
+    echo -e "${NC}"
+}
+
+# Main execution
+main() {
+    # Start logging
+    exec > >(tee -a "$LOG_FILE") 2>&1
+    
+    print_header
+    check_root
+    check_python
+    create_venv
+    activate_venv
+    install_python_packages
+    install_system_deps
+    setup_udev_rules
+    check_vivado_vitis
+    setup_project_structure
+    setup_dev_tools
+    run_validation_tests
+    print_completion
+    
+    echo -e "${BLUE}Setup completed at $(date)${NC}"
+}
+
+# Run main function
+main "$@"
