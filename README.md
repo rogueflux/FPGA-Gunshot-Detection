@@ -1,6 +1,6 @@
 # Gunshot Detection and Localization System
 
-## 📋 Overview
+## Overview
 A lightweight, real-time gunshot detection and localization system designed for edge deployment on FPGA platforms. The system uses a six-microphone hexagonal array and an attention-augmented MobileNet1D neural network to detect gunshots with high recall, followed by MUSIC-based localization for directional estimation.
 
 **Key Capabilities:**
