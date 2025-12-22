@@ -33,6 +33,7 @@
 #define ADC_BIT_DEPTH 8
 #define ADC_REF_VOLTAGE 5.0f
 #define ADC_SAMPLE_RATE 8000
+#define ADC_SPI_CLOCK_RATE 1000000  // 1 MHz for ADC
 
 // Audio processing parameters
 #define AUDIO_SAMPLE_RATE 16000
@@ -62,6 +63,12 @@
 #define ERROR_COMMUNICATION -4
 #define ERROR_INVALID_PARAMETER -5
 
+// SPI specific error codes
+#define ERROR_SPI_INIT_FAILED -10
+#define ERROR_SPI_TRANSFER_FAILED -11
+#define ERROR_SPI_TIMEOUT -12
+#define ERROR_ADC_NOT_RESPONDING -13
+
 // Type definitions for fixed-point arithmetic
 typedef int16_t audio_sample_t;
 typedef int32_t audio_accum_t;
@@ -76,6 +83,8 @@ typedef struct {
     uint8_t system_status;
     int8_t temperature;
     uint16_t free_memory_kb;
+    uint32_t spi_sample_count;
+    uint32_t spi_error_count;
 } SystemStatus;
 
 // Function prototypes
@@ -94,5 +103,8 @@ uint32_t get_free_memory(void);
 
 #define ERROR_PRINT(fmt, ...) xil_printf("[ERROR] " fmt, ##__VA_ARGS__)
 #define INFO_PRINT(fmt, ...) xil_printf("[INFO] " fmt, ##__VA_ARGS__)
+
+// SPI-specific debug
+#define SPI_DEBUG_PRINT(fmt, ...) xil_printf("[SPI] " fmt, ##__VA_ARGS__)
 
 #endif // PLATFORM_CONFIG_H
