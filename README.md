@@ -243,12 +243,6 @@ python models/prune_model.py --model gunshot_model_weights.pth --sparsity 0.3
 - Ensure <10 ms latency on target hardware
 - Document all public APIs
 
-## Documentation
-
-- [System Architecture](docs/architecture_diagrams/)
-- [API Reference](docs/api_documentation.md)
-- [Deployment Guide](docs/deployment_guide.md)
-- [Troubleshooting](docs/troubleshooting.md)
 
 ## License
 
