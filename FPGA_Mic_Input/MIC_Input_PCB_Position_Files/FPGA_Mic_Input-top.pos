@@ -1,0 +1,58 @@
+### Footprint positions - created on 2025-12-21T16:16:25+0530 ###
+### Printed by KiCad version 9.0.4
+## Unit = mm, Angle = deg.
+## Side : top
+# Ref     Val           Package                                                                PosX       PosY       Rot  Side
+C1        0.1uF         C_Disc_D3.0mm_W2.0mm_P2.50mm                                        18.0740   104.0070    0.0000  top
+C2        10uF          C_Disc_D3.0mm_W2.0mm_P2.50mm                                        20.5540   100.5840  180.0000  top
+C3        1uF           C_Disc_D3.0mm_W2.0mm_P2.50mm                                         9.1440    85.6680  180.0000  top
+C4        1uF           C_Disc_D3.0mm_W2.0mm_P2.50mm                                         9.1440    89.2180  180.0000  top
+C5        1uF           C_Disc_D3.0mm_W2.0mm_P2.50mm                                         9.1440    92.7680  180.0000  top
+C6        2.7uF         C_Disc_D3.0mm_W2.0mm_P2.50mm                                        14.7120    85.6620  180.0000  top
+C7        2.7uF         C_Disc_D3.0mm_W2.0mm_P2.50mm                                        14.6920    89.2180  180.0000  top
+C8        2.7uF         C_Disc_D3.0mm_W2.0mm_P2.50mm                                        14.6920    92.7680  180.0000  top
+C9        1uF           C_Disc_D3.0mm_W2.0mm_P2.50mm                                         9.1490    49.2760  180.0000  top
+C10       1uF           C_Disc_D3.0mm_W2.0mm_P2.50mm                                         9.1690    52.8320  180.0000  top
+C11       2.7uF         C_Disc_D3.0mm_W2.0mm_P2.50mm                                        14.8640    49.2760  180.0000  top
+C12       1uF           C_Disc_D3.0mm_W2.0mm_P2.50mm                                         9.1690    56.3700  180.0000  top
+C13       2.7uF         C_Disc_D3.0mm_W2.0mm_P2.50mm                                        14.8640    52.8320  180.0000  top
+C14       2.7uF         C_Disc_D3.0mm_W2.0mm_P2.50mm                                        14.8440    56.3880  180.0000  top
+C15       0.1uF         C_Disc_D3.0mm_W2.0mm_P2.50mm                                        32.4585    16.5100    0.0000  top
+C16       10uF          C_Disc_D3.0mm_W2.0mm_P2.50mm                                        32.5320    12.9540    0.0000  top
+J1        MIC_Input     TerminalBlock_Altech_AK300-3_P5.00mm                                18.1140   123.3070    0.0000  top
+J2        9V_Input      TerminalBlock_MetzConnect_360271_1x01_Horizontal_ScrewM3.0_Boxed    38.3540   109.8070    0.0000  top
+J3        3V3_Input     TerminalBlock_MetzConnect_360271_1x01_Horizontal_ScrewM3.0_Boxed    38.3540   100.4570    0.0000  top
+J4        FPGA_SPI      JST_EH_B6B-EH-A_1x06_P2.50mm_Vertical                               27.5190     5.4610  180.0000  top
+R1        150k          R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    27.1780    85.9650  180.0000  top
+R2        150k          R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    27.1780    89.1150  180.0000  top
+R3        150k          R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    27.1780    92.2650  180.0000  top
+R4        10k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                     8.5090    17.2720    0.0000  top
+R5        100           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                     8.5090    14.3760    0.0000  top
+R6        90k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    27.4570    49.6320  180.0000  top
+R7        90k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    27.4570    52.7820  180.0000  top
+R8        90k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    27.4570    55.9320  180.0000  top
+R9        100           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                     8.5090    11.5570    0.0000  top
+R10       100           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                     8.5090    20.0660    0.0000  top
+RBottom1  15k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    22.9870   100.8380    0.0000  top
+RTop1     47k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    30.6070   103.6320  180.0000  top
+R_bias_1  4.7k          R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    13.5890    97.0280   90.0000  top
+R_bias_2  4.7k          R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    10.4140    97.0280   90.0000  top
+R_bias_3  4.7k          R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                     7.2390    97.0280   90.0000  top
+R_mic_1   2k            R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    13.5890   107.4420   90.0000  top
+R_mic_2   2k            R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    10.4140   107.4420   90.0000  top
+R_mic_3   2k            R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                     7.2390   107.4420   90.0000  top
+Rg1       10k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    37.5920    86.0040  180.0000  top
+Rg2       10k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    37.5920    89.1540  180.0000  top
+Rg3       10k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    37.5920    92.3040  180.0000  top
+Rg4       10k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    37.6170    49.6820  180.0000  top
+Rg5       10k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    37.6170    52.8320  180.0000  top
+Rg6       10k           R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal                    37.6170    55.9820  180.0000  top
+U1        TL071         DIP-8-16_W7.62mm                                                     7.3860    80.3910    0.0000  top
+U2        TL071         DIP-8-16_W7.62mm                                                    18.1660    80.3910    0.0000  top
+U3        TL071         DIP-8-16_W7.62mm                                                    28.9460    80.3910    0.0000  top
+U4        TL071         DIP-8-16_W7.62mm                                                     7.6400    42.5450    0.0000  top
+U5        TL071         DIP-8-16_W7.62mm                                                    18.4200    42.5450    0.0000  top
+U6        TL071         DIP-8-16_W7.62mm                                                    29.2000    42.5450    0.0000  top
+U7        MAX11060GUU_  SOP50P640X110-38N                                                   24.2570    15.4940   90.0000  top
+U8        OPA197xD      SOIC-8_3.9x4.9mm_P1.27mm                                            23.7490   111.1250    0.0000  top
+## End
