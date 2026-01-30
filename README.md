@@ -246,7 +246,7 @@ python models/prune_model.py --model gunshot_model_weights.pth --sparsity 0.3
 
 ## License
 
-Proprietary - Contact authors for licensing information.
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
